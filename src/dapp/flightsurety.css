@@ -2,6 +2,7 @@ body {
     background-image: url('flight.jpg'); /* Source: iStockPhoto */
     background-repeat: no-repeat;
     background-size: cover;
+    word-wrap: break-word;
 }
 
 .container {
@@ -36,7 +37,20 @@ section {
 label.form {
     font-size: 14px;
     margin-right: 20px;
+    width:150px;
+    vertical-align: middle;
+    text-align: right;
+    padding-top:5px;
 }
-input {
+input,select, p {
     margin-right: 30px;
+    width:250px;
+}
+btn{
+    width: 160px;   
+    max-height: 38px;
+}
+hr{
+    width:100%;
+    border: 1px solid white;
 }
