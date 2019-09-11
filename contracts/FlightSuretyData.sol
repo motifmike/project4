@@ -216,7 +216,7 @@ contract FlightSuretyData {
         require(isFlightRegistered(airline, flight, timestamp) == true, "Flight doesn't exist");
         insuranceManifest[passengerFlightId].passenger = passenger;
         insuranceManifest[passengerFlightId].flightId = id;
-        insuranceManifest[passengerFlightId].amount = msg.value;
+        insuranceManifest[passengerFlightId].amount = insuranceManifest[passengerFlightId].amount.add(msg.value);
         registeredInsurees.push(passengerFlightId);
 
     }
@@ -265,6 +265,10 @@ contract FlightSuretyData {
         insuranceClaims[passenger] = 0;
         passenger.transfer(claimAmount);
     }
+        function getBalance (address payable passenger) external payable returns(uint ){
+return  insuranceManifest[registeredInsurees[0]].amount; //insuranceClaims[passenger];
+        }
+
 
    /**
     * @dev Initial funding for the insurance. Unless there are too many delayed flights

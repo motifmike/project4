@@ -1,4 +1,5 @@
 import FlightSuretyApp from '../../build/contracts/FlightSuretyApp.json'
+import FlightSuretyData from '../../build/contracts/FlightSuretyData.json'
 import Config from './config.json'
 import Web3 from 'web3'
 
@@ -7,6 +8,7 @@ export default class Contract {
     let config = Config[network]
     this.web3 = new Web3(new Web3.providers.HttpProvider(config.url))
     this.flightSuretyApp = new this.web3.eth.Contract(FlightSuretyApp.abi, config.appAddress)
+    this.flightSuretyData = new this.web3.eth.Contract(FlightSuretyData.abi, config.dataAddress)
     this.initialize(callback)
     this.owner = null
     this.airlines = []
@@ -98,5 +100,17 @@ export default class Contract {
       .buy(payload.airline, payload.timestamp, payload.flight)
       .send({ from: self.owner, value: value, gas: 6721975, gasPrice: 100000000000 })
     return result
+  }
+  async takeMoney () {
+    let self = this
+
+    let result = await self.flightSuretyData.methods
+      .getBalance(self.owner)
+      .call()
+    return result
+    // let result = await self.flightSuretyApp.methods
+    //   .cashOut()
+    //   .send({ from: self.owner, gas: 6721975, gasPrice: 100000000000 })
+    // return result
   }
 }

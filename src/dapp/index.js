@@ -75,7 +75,21 @@ import './flightsurety.css';
         }
 
         display('Flight Registration', 'Flight Registration', [{ label: 'Flight:', error: error, value: JSON.stringify(result) }])
-        DOM.elid('flights-list').appendChild(DOM.p(flight + " @ " + flightTimestamp))
+        DOM.elid('flights-select').appendChild(DOM.option(flight + " @ " + flightTimestamp))
+
+      })
+      // TAKE MONEY
+      DOM.elid('submit-take').addEventListener('click', async () => {
+
+        let result
+        let error = null
+        try {
+          result = await contract.takeMoney()
+        } catch (e) {
+          console.log(e)
+          error = e
+        }
+        display('Claim', 'Taking money', [{ label: 'Payout', error: error, value: JSON.stringify(result) }]);
 
       })
     })

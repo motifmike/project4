@@ -26,7 +26,7 @@ web3.eth.getAccounts(async (err, acc) => {
     fromBlock: 0
   }, async (error, event) => {
     if (error) console.log(error);
-
+    console.log(`Flight ${event.returnValues.flight} @ ${event.returnValues.timestamp} has status of ${event.returnValues.status}`)
   });
 
   await flightSuretyApp.events.OracleRequest({
