@@ -14,7 +14,7 @@ export default class Contract {
   }
 
   initialize (callback) {
-    this.web3.eth.getAccounts((error, accts) => {
+    this.web3.eth.getAccounts(async (error, accts) => {
       this.owner = accts[0]
 
       let counter = 1
@@ -28,6 +28,11 @@ export default class Contract {
       }
       console.log(this.airlines)
       console.log(this.passengers)
+      await this.flightSuretyApp.events.allEvents({ fromBlock: 'latest' })
+        .on('data', console.log)
+        .on('changed', console.log)
+        .on('error', console.log);
+
       callback()
     })
   }

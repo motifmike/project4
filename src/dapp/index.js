@@ -16,7 +16,7 @@ import './flightsurety.css';
         var flights = await contract.getFlights()
         console.log(flights)
         flights.forEach((flight, index) => {
-          DOM.elid('flights-list').appendChild(DOM.p(flight))
+          DOM.elid('flights-select').appendChild(DOM.option(flight))
         })
       } catch (e) {
         console.log(e)
@@ -40,6 +40,7 @@ import './flightsurety.css';
         let flight = DOM.elid('flight-number').value
         // Write transaction
         contract.fetchFlightStatus(flight, (error, result) => {
+          console.log(error)
           display('Oracles', 'Trigger oracles', [{ label: 'Fetch Flight Status', error: error, value: result.flight + ' ' + result.timestamp }])
         })
       })
@@ -57,6 +58,8 @@ import './flightsurety.css';
           console.log(e)
           error = e
         }
+        display('Insurance', 'Buy Insurance', [{ label: 'Insurance', error: error, value: JSON.stringify(result) }]);
+
       })
       // REGISTER FLIGHT
       DOM.elid('register-flight').addEventListener('click', async () => {
