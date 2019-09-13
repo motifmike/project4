@@ -218,7 +218,6 @@ contract FlightSuretyData {
         insuranceManifest[passengerFlightId].flightId = id;
         insuranceManifest[passengerFlightId].amount = insuranceManifest[passengerFlightId].amount.add(msg.value);
         registeredInsurees.push(passengerFlightId);
-
     }
 
     /**
@@ -261,13 +260,14 @@ contract FlightSuretyData {
     */
     function pay (address payable passenger) external payable
     {
-        uint claimAmount = insuranceClaims[passenger];
+        require(insuranceClaims[passenger] > 0, "No payout available");
+        uint256 claimAmount = insuranceClaims[passenger];
         insuranceClaims[passenger] = 0;
         passenger.transfer(claimAmount);
     }
-        function getBalance (address payable passenger) external payable returns(uint ){
-return  insuranceManifest[registeredInsurees[0]].amount; //insuranceClaims[passenger];
-        }
+    function getBalance (address payable passenger) external payable returns(uint256 ){
+        return  insuranceClaims[passenger];
+    }
 
 
    /**
@@ -286,10 +286,12 @@ return  insuranceManifest[registeredInsurees[0]].amount; //insuranceClaims[passe
     * @dev Fallback function for funding smart contract.
     *
     */
-    function() external  
+    function() external  payable
     {
-        require(false, "THe function you are calling doesn't exist");
-    }
+
+         require(msg.value > 0, "No funds are not allowed");
+        funds[msg.sender] = funds[msg.sender].add(msg.value);    
+        }
 
 
 }

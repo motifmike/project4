@@ -59,12 +59,12 @@ export default class Contract {
     return result
   }
 
-  fetchFlightStatus (flight, callback) {
+  fetchFlightStatus (flight, flightTimestamp, callback) {
     let self = this
     let payload = {
       airline: self.airlines[0],
       flight: flight,
-      timestamp: Math.floor(Date.now() / 1000)
+      timestamp: flightTimestamp
     }
     self.flightSuretyApp.methods
       .fetchFlightStatus(payload.airline, payload.flight, payload.timestamp)
@@ -104,13 +104,13 @@ export default class Contract {
   async takeMoney () {
     let self = this
 
-    let result = await self.flightSuretyData.methods
-      .getBalance(self.owner)
-      .call()
-    return result
-    // let result = await self.flightSuretyApp.methods
-    //   .cashOut()
-    //   .send({ from: self.owner, gas: 6721975, gasPrice: 100000000000 })
+    // let result = await self.flightSuretyData.methods
+    //   .getBalance(self.owner)
+    //   .call()
     // return result
+    let result = await self.flightSuretyApp.methods
+      .cashOut()
+      .send({ from: self.owner, gas: 6721975, gasPrice: 100000000000 })
+    return result
   }
 }
