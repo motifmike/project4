@@ -275,7 +275,7 @@ contract FlightSuretyData {
     *      resulting in insurance payouts, the contract should be self-sustaining
     *
     */   
-    function fund (address senderAddress) public payable
+    function fund (address senderAddress) external payable
     {
         require(msg.value > 0, "Must provided more than 0 funds");
         funds[senderAddress] = funds[senderAddress].add(msg.value);

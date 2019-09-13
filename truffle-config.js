@@ -15,8 +15,8 @@ module.exports = {
       port: 7545,
       websockets: true,
       network_id: '*',
-      gas: 6721975,
-      gasPrice: 0,
+      gas: 99999999,
+      gasPrice: 20000000000
     }
   },
   compilers: {

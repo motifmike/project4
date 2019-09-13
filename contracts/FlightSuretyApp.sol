@@ -345,6 +345,6 @@ contract FlightSuretyData{
     function creditInsurees (address airline, string calldata flight, uint256 timestamp ) external;
     function registerFlight (string calldata name,uint256 timestamp,address airline)  external;
     function pay (address payable passenger ) external payable;
-    function fund (address senderAddress) public payable;
+    function fund (address senderAddress) external payable;
     function getFlightKey ( address airline, string memory flight, uint256 timestamp ) pure internal returns(bytes32) ;
 }

@@ -149,7 +149,7 @@ contract('Flight Surety Tests', async (accounts) => {
   it('(passenger) should be able to buy insurance <= 1 ether', async () => {
 
     let airline = accounts[1]
-    let passenger = accounts[50]
+    let passenger = accounts[49]
     let flight = 'Flight AA180'
     let timestamp = new Date(2019, 08, 01).valueOf()
     let registered = await config.flightSuretyData.isFlightRegistered(airline, flight, timestamp)
@@ -159,12 +159,12 @@ contract('Flight Surety Tests', async (accounts) => {
   })
   it('(passenger) should be credited 1.5X if flight is delayed', async () => {
     let airline = accounts[1]
-    let passenger = accounts[50]
+    let passenger = accounts[49]
     let flight = 'Flight AA180'
     let timestamp = new Date(2019, 08, 01).valueOf()
 
     //register 30 oracles 
-    for (let oracle = 1; oracle < 30; oracle++) {
+    for (let oracle = 1; oracle < 49; oracle++) {
       await config.flightSuretyApp.registerOracle({ from: accounts[oracle], value: REGISTRATIONFEE });
       let result = await config.flightSuretyApp.getMyIndexes.call({ from: accounts[oracle] });
     }
@@ -177,7 +177,7 @@ contract('Flight Surety Tests', async (accounts) => {
     //hope for 3 responses that match
     let successes = 0;
 
-    for (let oracle = 1; oracle < 30; oracle++) {
+    for (let oracle = 1; oracle < 49; oracle++) {
       let oracleIndexes1 = await config.flightSuretyApp.getMyIndexes.call({ from: accounts[oracle] });
       let oindex = oracleIndexes1.find((x) => { return BigNumber(x).toNumber() === index })
       if (oindex == null) continue;
@@ -200,11 +200,13 @@ contract('Flight Surety Tests', async (accounts) => {
     }
   })
   it('(passenger) should be able to withdraw funds after flight is delayed and account credited', async () => {
-    let passenger = accounts[50]
+    let passenger = accounts[49]
     let originalAmount = web3.utils.fromWei(await web3.eth.getBalance(passenger), 'ether');
     let tx = await config.flightSuretyApp.cashOut({ from: passenger });
     let imrich = web3.utils.fromWei(await web3.eth.getBalance(passenger), 'ether');
-    assert.equal(originalAmount < imrich, true, 'I should have more monies');
+    console.log(originalAmount)
+    console.log(imrich)
+    assert.equal(originalAmount*100 < imrich*100, true, 'I should have more monies');
   })
 
 })

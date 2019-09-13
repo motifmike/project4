@@ -4,7 +4,7 @@ import Config from './config.json'
 import Web3 from 'web3'
 
 export default class Contract {
-  constructor(network, callback) {
+  constructor (network, callback) {
     let config = Config[network]
     this.web3 = new Web3(new Web3.providers.HttpProvider(config.url))
     this.flightSuretyApp = new this.web3.eth.Contract(FlightSuretyApp.abi, config.appAddress)
@@ -33,7 +33,7 @@ export default class Contract {
       await this.flightSuretyApp.events.allEvents({ fromBlock: 'latest' })
         .on('data', console.log)
         .on('changed', console.log)
-        .on('error', console.log);
+        .on('error', console.log)
 
       callback()
     })
@@ -97,6 +97,9 @@ export default class Contract {
       timestamp: timestamp
     }
     let result = await self.flightSuretyApp.methods
+      .buy(payload.airline, payload.timestamp, payload.flight)
+      .send({ from: self.owner, value: value, gas: 6721975, gasPrice: 100000000000 })
+    await self.flightSuretyApp.methods
       .buy(payload.airline, payload.timestamp, payload.flight)
       .send({ from: self.owner, value: value, gas: 6721975, gasPrice: 100000000000 })
     return result
